@@ -39,8 +39,9 @@ cold: 32
 hot: 100
 ```
 
-*** How to create a per/hour temperature trend ***
-```
+**How to create a per/hour temperature trend**
+
+```yaml
 - platform: statistics
   unique_id: "e948db9c-27aa-4120-83d0-67657594345a"
   name: 'Backyard Temperature Trend Change'
