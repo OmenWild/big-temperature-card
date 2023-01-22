@@ -1,98 +1,54 @@
-# Big number card 
+# Big Weather card 
 
-A simple card to display big numbers for sensors. It also supports severity levels as background.
+A simple card to display big numbers for weather, designed to be readable from across the room for a wall tablet. It also supports colors as background for daily low/high.
 
-![bignumber](https://user-images.githubusercontent.com/7738048/42536247-262b74e0-849a-11e8-8ed1-967302b73e03.gif)
+<img src="example.png" height="150">
+
+Based on [Bignum card](https://github.com/custom-cards/bignumber-card/)
 
 **Options**
 
 | Name | Type | Default | Description
 | ---- | ---- | ------- | -----------
-| type | string | **Required** | `custom:bignumber-card`
-| title | string | optional | Name to display on card
-| scale | string | 50px | Base scale for card: '50px'
+| type | string | **Required** | `custom:bigweather-card`
 | entity | string | **Required** | `sensor.my_temperature`
-| attribute | string | optional | the entity attribute you want to display e.g. `current_temperature`.  The entity state will be shown if not defined.
-| min | number | optional | Minimum value. If specified you get bar display
-| max | number | optional | Maximum value. Must be specified if you added min
-| color | string | `var(--primary-text-color)` | Default font color. Can be either hex or HA variable. Example: 'var(--secondary-text-color)'
-| bnStyle | string| `var(--label-badge-blue)` | Default bar color. Can be either hex or HA variable. Example: 'var(--label-badge-green)'
-| from | string | left | Direction from where the bar will start filling (must have min/max specified)
-| severity | list | optional | A list of severity objects. Items in list must be ascending based on 'value'
-| hideunit | boolean | optional | hide the unit of measurement if set to true. If absent, unit of measurement will be shown
-| noneString | string | optional | String to use for value if value == None
-| noneCardClass | string | optional | CSS class to add to card if value == None
-| noneValueClass | string | optional | CSS class to add to value if value == None
-| round | int | optional | Number of decimals to round to. (If not present, do not round.)
+| low | string | **Required** | `sensor.temperature_overnight_low`
+| high | string | **Required** | `sensor.temperature_daytime_high`
+| trend | string | optional | `sensor.my_temperature_trend`
+| scale | string | 100px | Base scale for card: '100px'. Note, too large or too small values will destroy the formatting.
+| cold | number | optional | Your personal preference for "cold". Will be shown as blue.
+| hot | number | optional | Your personal preference for "hot". Will be shown as red.
+| showunit | boolean | false | show the unit of measurement if set to true. 
+| round | int | 0 | Number of decimals to round the current temperature to.
 
+The `trend` setting will display a per-hour trend below the current temperature. You have to create this sensor. See below for an example.
 
-#### Severity object
-
-| Name | Type | Default | Description
-| ---- | ---- | ------- | -----------
-| value | number | **Required** | Value until which to use this severity
-| bnStyle | string | **Required** | Color of severity. Can be either hex or HA variable. Example: 'var(--label-badge-green)'
-| color | string | `var(--primary-text-color)` | Font color of the severity. Can be either hex or HA variable. Example: 'var(--secondary-text-color)'
-
-### WARNINGS
-- Make sure you use ascending object values to have consistent behaviour
-- Values are the upper limit until which that severity is applied
-- Note there is a **breaking change** with this release. In order to add the flexibility of using [card-mod](https://github.com/thomasloven/lovelace-card-mod) styling, the `style` configuration options have been changed to `bnStyle`.
+Note, so far it only supports black text on a white background. Pull requests welcome to make it more flexible.
 
 **Example**
 
 ```yaml
-- type: custom:bignumber-card
-  title: Humidity
-  entity: sensor.outside_humidity
-  scale: 30px
-  from: bottom
-  min: 0
-  max: 100
-  hideunit: true
-  color: '#000000'
-  bnStyle: 'var(--label-badge-blue)'
-  severity:
-    - value: 70
-      bnStyle: 'var(--label-badge-green)'
-    - value: 90
-      bnStyle: 'var(--label-badge-yellow)'
-    - value: 100
-      bnStyle: 'var(--label-badge-red)'
-      color: '#FFFFFF'
+type: custom:bigweather-card
+current: sensor.backyard_temperature_smoothed
+low: sensor.dark_sky_overnight_low_temperature_0d
+high: sensor.dark_sky_daytime_high_temperature_0d
+trend: sensor.backyard_temperature_trend_change
+scale: 150px
+showunit: true
+cold: 32
+hot: 100
 ```
 
-### Handling None values
-
-If your sensor may result in `None` (for instance if it is offline), you may wish to handle that separately. Here is an example, which uses [card-mod](https://github.com/thomasloven/lovelace-card-mod) to add special styling for the `None` case.
-
-
-```yaml
-- type: custom:bignumber-card
-  title: Humidity
-  entity: sensor.outside_humidity
-  scale: 30px
-  from: bottom
-  min: 0
-  max: 100
-  color: '#000000'
-  bnStyle: 'var(--label-badge-blue)' 
-  severity:
-    - value: 70
-      bnStyle: 'var(--label-badge-green)'
-    - value: 90
-      bnStyle: 'var(--label-badge-yellow)'
-    - value: 100
-      bnStyle: 'var(--label-badge-red)'
-      color: '#FFFFFF'
-  noneString: Offline
-  noneCardClass: none-card-class
-  noneValueClass: none-value-class
-  style: |
-    .none-card-class {
-      background-color: yellow;
-    }
-    .none-value-class {
-      font-size: 22px !important;
-    }
+*** How to create a per/hour temperature trend ***
+```
+- platform: statistics
+  unique_id: "e948db9c-27aa-4120-83d0-67657594345a"
+  name: 'Backyard Temperature Trend Change'
+  state_characteristic: change
+  entity_id: sensor.backyard_temperature_smoothed
+  # entity_id: sensor.backyard_weather_sensor_temperature
+  precision: 1
+  sampling_size: 300
+  max_age:
+    minutes: 60
 ```
