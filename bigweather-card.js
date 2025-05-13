@@ -1,63 +1,63 @@
 class BigWeatherCard extends HTMLElement {
-  constructor() {
-    super();
-    this.attachShadow({ mode: "open" });
-  }
-
-  setConfig(config) {
-    if (!config.current) {
-      throw new Error("Please define: current");
-    }
-    if (!config.low) {
-      throw new Error("Please define: low");
-    }
-    if (!config.high) {
-      throw new Error("Please define: high");
+    constructor() {
+        super();
+        this.attachShadow({ mode: "open" });
     }
 
-    const root = this.shadowRoot;
-    if (root.lastChild) root.removeChild(root.lastChild);
+    setConfig(config) {
+        if (!config.current) {
+            throw new Error("Please define: current");
+        }
+        if (!config.low) {
+            throw new Error("Please define: low");
+        }
+        if (!config.high) {
+            throw new Error("Please define: high");
+        }
 
-    const cardConfig = Object.assign({}, config);
+        const root = this.shadowRoot;
+        if (root.lastChild) root.removeChild(root.lastChild);
 
-    if (!cardConfig.scale) cardConfig.scale = "100px";
-    if (!cardConfig.opacity) cardConfig.opacity = "0.5";
+        const cardConfig = Object.assign({}, config);
 
-    cardConfig.cold = parseFloat(config.cold) || -1;
-    cardConfig.hot = parseFloat(config.hot) || -1;
+        if (!cardConfig.scale) cardConfig.scale = "150px";
+        if (!cardConfig.opacity) cardConfig.opacity = "0.5";
 
-    cardConfig.round = parseFloat(config.round) || 0;
+        cardConfig.cold = parseFloat(config.cold) || -1;
+        cardConfig.hot = parseFloat(config.hot) || -1;
 
-    cardConfig.showunit = config.showunit || false;
+        cardConfig.round = parseFloat(config.round) || 0;
 
-    const card = document.createElement("ha-card");
-    const container = document.createElement("span");
-    container.id = "container";
-    container.className = "bwc-grid-container";
+        cardConfig.showunit = config.showunit || false;
 
-    const low = document.createElement("span");
-    low.id = "bwc-low";
-    low.className = "grid-item bwc-low";
-    container.appendChild(low);
+        const card = document.createElement("ha-card");
+        const container = document.createElement("span");
+        container.id = "container";
+        container.className = "bwc-grid-container";
 
-    const current = document.createElement("span");
-    current.id = "bwc-current";
-    current.className = "grid-item bwc-current";
-    container.appendChild(current);
+        const low = document.createElement("span");
+        low.id = "bwc-low";
+        low.className = "grid-item bwc-low";
+        container.appendChild(low);
 
-    const trend = document.createElement("span");
-    trend.id = "bwc-trend";
-    trend.className = "grid-item bwc-trend";
-    container.appendChild(trend);
+        const current = document.createElement("span");
+        current.id = "bwc-current";
+        current.className = "grid-item bwc-current";
+        container.appendChild(current);
 
-    const high = document.createElement("span");
-    high.id = "bwc-high";
-    high.className = "grid-item bwc-high";
-    container.appendChild(high);
+        const trend = document.createElement("span");
+        trend.id = "bwc-trend";
+        trend.className = "grid-item bwc-trend";
+        container.appendChild(trend);
 
-    const style = document.createElement("style");
+        const high = document.createElement("span");
+        high.id = "bwc-high";
+        high.className = "grid-item bwc-high";
+        container.appendChild(high);
 
-    style.textContent = `
+        const style = document.createElement("style");
+
+        style.textContent = `
       ha-card {
         text-align: center;
         --base-unit: ${cardConfig.scale};
@@ -69,51 +69,45 @@ class BigWeatherCard extends HTMLElement {
         font-size: calc(var(--base-unit) * 0.33);
       }
 
-      .bwc-trend {
-        grid-column: 2;
-        grid-row: 2;
-
-        font-size: calc(var(--base-unit) * 0.25);
-        padding-left: calc(var(--base-unit) * 0.05);
-        padding-right: calc(var(--base-unit) * 0.05);
-      }
-
       .bwc-low {
         grid-column: 1;
 
         padding-left: 5px;
-        text-align: left;
+        //text-align: left;
+      }
+
+      .bwc-trend {
+        grid-column: 2;
+
+        font-size: calc(var(--base-unit) * 0.2);
+
+        margin-top: -0.35em;
+        padding-left: calc(var(--base-unit) * 0.05);
+        padding-right: calc(var(--base-unit) * 0.05);
       }
 
       .bwc-current {
-        padding-top: 0.35em;
         grid-column: 2;
-        grid-row: 1;
 
         font-weight: bold;
         font-size: calc(var(--base-unit) * 0.8);
 
-        // height: calc(var(--base-unit) * 0.8);
-
-        // vertical-align: bottom;
-        text-align: bottom;
+        margin-top: -0.35em;
       }
 
       .bwc-high {
         grid-column: 3;
 
         padding-right: 5px;
-        text-align: right;
+        // text-align: right;
       }
 
       .bwc-low, .bwc-high {
-        padding-top: 0.3em;
-        grid-row: 1 / span 2;
+        padding-top: 0.25em;
+        grid-row: 1 / 3;
 
         font-size: calc(var(--base-unit) * 0.5);
         font-weight: bolder;
-
-        vertical-align: top;
 
         --threshold: 0.5;
 
@@ -124,139 +118,139 @@ class BigWeatherCard extends HTMLElement {
         --b: calc(var(--blue) * 0.0722);
         --sum: calc(var(--r) + var(--g) + var(--b));
         --perceived-lightness: calc(var(--sum) / 255);
-        
-        /* 
+
+        /*
            https://css-tricks.com/switch-font-color-for-different-backgrounds-with-css/
-           shows either white or black color depending on perceived darkness 
+           shows either white or black color depending on perceived darkness
         */
-        color: hsl(0, 0%, calc((var(--perceived-lightness) - var(--threshold)) * -10000000%)); 
+        color: hsl(0, 0%, calc((var(--perceived-lightness) - var(--threshold)) * -10000000%));
       }
 
       .bwc-grid-container {
         display: grid;
-        grid-template-columns: 20% 60% 20%;
+        grid-template-columns: 25% 50% 25%;
         grid-template-rows: 80% 20%;
         height: calc(var(--base-unit));
       }
-          `;
+        `;
 
-    card.appendChild(container);
-    card.appendChild(style);
-    card.addEventListener("click", (event) => {
-      this._fire("hass-more-info", { currentId: config.current });
-    });
-    root.appendChild(card);
-    this._config = cardConfig;
-  }
-
-  _fire(type, detail, options) {
-    const node = this.shadowRoot;
-    options = options || {};
-    detail = detail === null || detail === undefined ? {} : detail;
-    const event = new Event(type, {
-      bubbles: options.bubbles === undefined ? true : options.bubbles,
-      cancelable: Boolean(options.cancelable),
-      composed: options.composed === undefined ? true : options.composed,
-    });
-    event.detail = detail;
-    node.dispatchEvent(event);
-    return event;
-  }
-
-  hsl2rgb(h, s, l) {
-    // Originally based on https://stackoverflow.com/questions/2353211/hsl-to-rgb-color-conversion
-    let a = s * Math.min(l, 1 - l);
-    let f = (n, k = (n + h / 30) % 12) => l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
-
-    // Clamp number between two values
-    // https://www.webtips.dev/webtips/javascript/how-to-clamp-numbers-in-javascript
-    const clamp = (num) => Math.min(Math.max(num * 255, 0), 255);
-
-    return {
-      red: clamp(f(0)),
-      green: clamp(f(8)),
-      blue: clamp(f(4)),
-    };
-  }
-
-  fractionToRGB(config, value, maxHue = 0, minHue = 240) {
-    if (config.cold < 0 && config.hot < 0) {
-      // If cold & hot are not set, default to a white background.
-      return this.hsl2rgb(0, 1, 1);
+        card.appendChild(container);
+        card.appendChild(style);
+        card.addEventListener("click", (event) => {
+            this._fire("hass-more-info", { currentId: config.current });
+        });
+        root.appendChild(card);
+        this._config = cardConfig;
     }
 
-    var fraction = 0.0;
-    if (value <= config.cold) {
-      fraction = 0.0;
-    } else if (value >= config.hot) {
-      fraction = 1;
-    } else {
-      fraction = (value - config.cold) / (config.hot - config.cold);
+    _fire(type, detail, options) {
+        const node = this.shadowRoot;
+        options = options || {};
+        detail = detail === null || detail === undefined ? {} : detail;
+        const event = new Event(type, {
+            bubbles: options.bubbles === undefined ? true : options.bubbles,
+            cancelable: Boolean(options.cancelable),
+            composed: options.composed === undefined ? true : options.composed,
+        });
+        event.detail = detail;
+        node.dispatchEvent(event);
+        return event;
     }
 
-    const hue = fraction * (maxHue - minHue) + minHue;
-    return this.hsl2rgb(hue, 1, 0.5);
-  }
+    hsl2rgb(h, s, l) {
+        // Originally based on https://stackoverflow.com/questions/2353211/hsl-to-rgb-color-conversion
+        let a = s * Math.min(l, 1 - l);
+        let f = (n, k = (n + h / 30) % 12) => l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
 
-  set hass(hass) {
-    const config = this._config;
-    const root = this.shadowRoot;
+        // Clamp number between two values
+        // https://www.webtips.dev/webtips/javascript/how-to-clamp-numbers-in-javascript
+        const clamp = (num) => Math.min(Math.max(num * 255, 0), 255);
 
-    let state = hass.states[config.current].state;
+        return {
+            red: clamp(f(0)),
+            green: clamp(f(8)),
+            blue: clamp(f(4)),
+        };
+    }
 
-    if (state !== this._state) {
-      const measurement = hass.states[config.current].attributes.unit_of_measurement || "";
-      this._state = state;
-
-      let value = parseFloat(state).toFixed(config.round);
-
-      if (config.showunit == true) {
-        root.getElementById("bwc-current").innerHTML = `${value}<small>${measurement}</small>`;
-      } else {
-        root.getElementById("bwc-current").textContent = `${value}`;
-      }
-
-      if (config.trend) {
-        state = hass.states[config.trend].state;
-        value = parseFloat(state).toFixed(1);
-        root.getElementById("bwc-trend").innerHTML = `${value}°<small>/hr</small>`;
-        if (state < 0) {
-          root.getElementById("bwc-trend").style.setProperty("text-align", "left");
-        } else {
-          root.getElementById("bwc-trend").style.setProperty("text-align", "right");
+    fractionToRGB(config, value, maxHue = 0, minHue = 240) {
+        if (config.cold < 0 && config.hot < 0) {
+            // If cold & hot are not set, default to a white background.
+            return this.hsl2rgb(0, 1, 1);
         }
-      }
 
-      state = hass.states[config.low].state;
-      value = parseFloat(state).toFixed(0);
-      root.getElementById("bwc-low").textContent = `${value}`;
+        var fraction = 0.0;
+        if (value <= config.cold) {
+            fraction = 0.0;
+        } else if (value >= config.hot) {
+            fraction = 1;
+        } else {
+            fraction = (value - config.cold) / (config.hot - config.cold);
+        }
 
-      let rgb = this.fractionToRGB(config, value);
-      root.querySelector(".bwc-low").style.setProperty("--red", rgb.red);
-      root.querySelector(".bwc-low").style.setProperty("--green", rgb.green);
-      root.querySelector(".bwc-low").style.setProperty("--blue", rgb.blue);
-
-      state = hass.states[config.high].state;
-      value = parseFloat(state).toFixed(0);
-      root.getElementById("bwc-high").textContent = `${value}`;
-
-      rgb = this.fractionToRGB(config, value);
-      root.querySelector(".bwc-high").style.setProperty("--red", rgb.red);
-      root.querySelector(".bwc-high").style.setProperty("--green", rgb.green);
-      root.querySelector(".bwc-high").style.setProperty("--blue", rgb.blue);
-
-      // if (config.trend) {
-      //   state = hass.states[config.trend].state;
-      //   value = parseFloat(state).toFixed(1);
-      //   if (value < 0) {
-      //     root.getElementById("bwc-low").innerHTML += `<br/> <small>${value}°/hr</small>`;
-      //   } else {
-      //     root.getElementById("bwc-high").innerHTML += `<br/> <small>${value}°/hr</small>`;
-      //   }
-      // }
+        const hue = fraction * (maxHue - minHue) + minHue;
+        return this.hsl2rgb(hue, 1, 0.5);
     }
-    root.lastChild.hass = hass;
-  }
+
+    set hass(hass) {
+        const config = this._config;
+        const root = this.shadowRoot;
+
+        let state = hass.states[config.current].state;
+
+        if (state !== this._state) {
+            const measurement = hass.states[config.current].attributes.unit_of_measurement || "";
+            this._state = state;
+
+            let value = parseFloat(state).toFixed(config.round);
+
+            if (config.showunit == true) {
+                root.getElementById("bwc-current").innerHTML = `${value}<small>${measurement}</small>`;
+            } else {
+                root.getElementById("bwc-current").textContent = `${value}`;
+            }
+
+            if (config.trend) {
+                state = hass.states[config.trend].state;
+                value = parseFloat(state).toFixed(1);
+                root.getElementById("bwc-trend").innerHTML = `${value}°<small>/hr</small>`;
+                if (state < 0) {
+                    root.getElementById("bwc-trend").style.setProperty("text-align", "left");
+                } else {
+                    root.getElementById("bwc-trend").style.setProperty("text-align", "right");
+                }
+            }
+
+            state = hass.states[config.low].state;
+            value = parseFloat(state).toFixed(0);
+            root.getElementById("bwc-low").textContent = `${value}`;
+
+            let rgb = this.fractionToRGB(config, value);
+            root.querySelector(".bwc-low").style.setProperty("--red", rgb.red);
+            root.querySelector(".bwc-low").style.setProperty("--green", rgb.green);
+            root.querySelector(".bwc-low").style.setProperty("--blue", rgb.blue);
+
+            state = hass.states[config.high].state;
+            value = parseFloat(state).toFixed(0);
+            root.getElementById("bwc-high").textContent = `${value}`;
+
+            rgb = this.fractionToRGB(config, value);
+            root.querySelector(".bwc-high").style.setProperty("--red", rgb.red);
+            root.querySelector(".bwc-high").style.setProperty("--green", rgb.green);
+            root.querySelector(".bwc-high").style.setProperty("--blue", rgb.blue);
+
+            // if (config.trend) {
+            //   state = hass.states[config.trend].state;
+            //   value = parseFloat(state).toFixed(1);
+            //   if (value < 0) {
+            //     root.getElementById("bwc-low").innerHTML += `<br/> <small>${value}°/hr</small>`;
+            //   } else {
+            //     root.getElementById("bwc-high").innerHTML += `<br/> <small>${value}°/hr</small>`;
+            //   }
+            // }
+        }
+        root.lastChild.hass = hass;
+    }
 
   getCardSize() {
     return 1;
