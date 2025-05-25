@@ -80,9 +80,9 @@ class BigWeatherCard extends HTMLElement {
       .bwc-trend {
         grid-column: 2;
 
-        font-size: calc(var(--base-unit) * 0.2);
+        font-size: calc(var(--base-unit) * 0.15);
 
-        margin-top: calc(var(--base-unit) * -0.05);
+        margin-top: calc(var(--base-unit) * -0.1);
         padding-left: calc(var(--base-unit) * 0.05);
         padding-right: calc(var(--base-unit) * 0.05);
       }
@@ -91,8 +91,8 @@ class BigWeatherCard extends HTMLElement {
         grid-column: 2;
 
         margin-top: calc(var(--base-unit) * -0.1);
-        font-size: calc(var(--base-unit) * 0.8);
-        line-height: calc(var(--base-unit) * 0.8);
+        font-size: calc(var(--base-unit) * 0.7);
+        line-height: calc(var(--base-unit) * 0.7);
         font-weight: bold;
       }
 
