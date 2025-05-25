@@ -31,26 +31,26 @@ class BigWeatherCard extends HTMLElement {
         cardConfig.showunit = config.showunit || false;
 
         const card = document.createElement("ha-card");
-        const container = document.createElement("span");
+        const container = document.createElement("div");
         container.id = "container";
         container.className = "bwc-grid-container";
 
-        const low = document.createElement("span");
+        const low = document.createElement("div");
         low.id = "bwc-low";
         low.className = "grid-item bwc-low";
         container.appendChild(low);
 
-        const current = document.createElement("span");
+        const current = document.createElement("div");
         current.id = "bwc-current";
         current.className = "grid-item bwc-current";
         container.appendChild(current);
 
-        const trend = document.createElement("span");
+        const trend = document.createElement("div");
         trend.id = "bwc-trend";
         trend.className = "grid-item bwc-trend";
         container.appendChild(trend);
 
-        const high = document.createElement("span");
+        const high = document.createElement("div");
         high.id = "bwc-high";
         high.className = "grid-item bwc-high";
         container.appendChild(high);
@@ -71,9 +71,10 @@ class BigWeatherCard extends HTMLElement {
 
       .bwc-low {
         grid-column: 1;
+      }
 
-        padding-left: 5px;
-        //text-align: left;
+      .bwc-high {
+        grid-column: 3;
       }
 
       .bwc-trend {
@@ -81,7 +82,7 @@ class BigWeatherCard extends HTMLElement {
 
         font-size: calc(var(--base-unit) * 0.2);
 
-        margin-top: -0.35em;
+        margin-top: calc(var(--base-unit) * -0.05);
         padding-left: calc(var(--base-unit) * 0.05);
         padding-right: calc(var(--base-unit) * 0.05);
       }
@@ -89,36 +90,29 @@ class BigWeatherCard extends HTMLElement {
       .bwc-current {
         grid-column: 2;
 
-        font-weight: bold;
+        margin-top: calc(var(--base-unit) * -0.1);
         font-size: calc(var(--base-unit) * 0.8);
-
-        margin-top: -0.35em;
-      }
-
-      .bwc-high {
-        grid-column: 3;
-
-        padding-right: 5px;
-        // text-align: right;
+        line-height: calc(var(--base-unit) * 0.8);
+        font-weight: bold;
       }
 
       .bwc-low, .bwc-high {
-        padding-top: 0.25em;
         grid-row: 1 / 3;
 
-        font-size: calc(var(--base-unit) * 0.5);
-        font-weight: bolder;
-
         --threshold: 0.5;
-
-        background-color: rgb(var(--red), var(--green), var(--blue));
-
         --r: calc(var(--red) * 0.2126);
         --g: calc(var(--green) * 0.7152);
         --b: calc(var(--blue) * 0.0722);
         --sum: calc(var(--r) + var(--g) + var(--b));
         --perceived-lightness: calc(var(--sum) / 255);
 
+
+        font-size: calc(var(--base-unit) * 0.4);
+        line-height: calc(var(--base-unit) * 0.4);
+
+        font-weight: bolder;
+
+        background-color: rgb(var(--red), var(--green), var(--blue));
         /*
            https://css-tricks.com/switch-font-color-for-different-backgrounds-with-css/
            shows either white or black color depending on perceived darkness
@@ -204,16 +198,12 @@ class BigWeatherCard extends HTMLElement {
 
             let value = parseFloat(state).toFixed(config.round);
 
-            if (config.showunit == true) {
-                root.getElementById("bwc-current").innerHTML = `${value}<small>${measurement}</small>`;
-            } else {
-                root.getElementById("bwc-current").textContent = `${value}`;
-            }
+            root.getElementById("bwc-current").innerHTML = `${value}`;
 
             if (config.trend) {
                 state = hass.states[config.trend].state;
                 value = parseFloat(state).toFixed(1);
-                root.getElementById("bwc-trend").innerHTML = `${value}°<small>/hr</small>`;
+                root.getElementById("bwc-trend").innerHTML = `${value}${measurement}<small>/hr</small>`;
                 if (state < 0) {
                     root.getElementById("bwc-trend").style.setProperty("text-align", "left");
                 } else {
@@ -224,6 +214,7 @@ class BigWeatherCard extends HTMLElement {
             state = hass.states[config.low].state;
             value = parseFloat(state).toFixed(0);
             root.getElementById("bwc-low").textContent = `${value}`;
+
 
             let rgb = this.fractionToRGB(config, value);
             root.querySelector(".bwc-low").style.setProperty("--red", rgb.red);
