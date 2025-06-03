@@ -158,10 +158,10 @@ class BigTemperatureCard extends HTMLElement {
                 // Save the current temp for the next time through the loop.
                 this._state = state;
             }
-            let obj_name = `_${t}`;
+            const obj_name = `_${t}`;
 
-            let obj = this[obj_name];
-            let value = this.setContents(obj, state);
+            const obj = this[obj_name];
+            const value = this.setContents(obj, state);
             if ((t === "current" && config.color_current) || t != "current") {
                 this.setBackgroundColor(obj, value, config.cold, config.hot);
             }
