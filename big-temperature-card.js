@@ -171,9 +171,13 @@ class BigTemperatureCard extends HTMLElement {
             let measurement = "";
 
             if (config.show_unit) {
-                try {
-                    measurement = hass.states[config.current].attributes.unit_of_measurement || "";
-                } catch (error) {}
+                if (config.show_unit === false || config.show_unit === true) {
+                    try {
+                        measurement = hass.states[config.current].attributes.unit_of_measurement || "";
+                    } catch (error) {}
+                } else {
+                    measurement = config.show_unit;
+                }
             }
 
             if (typeof config.trend === "number") {

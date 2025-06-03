@@ -11,22 +11,22 @@ re-written from scratch.
 
 ## Options
 
-| Name            | Type                 | Required                 | Default | Description                                                                 |
-| --------------- | -------------------- | ------------------------ | ------- | --------------------------------------------------------------------------- |
-| type            | string               | **Required**             |         | `custom:big-temperature-card`                                               |
-| current         | sensor or float      | **Required**             | 65.43   | Sensor to use for the current temperature, e.g. `sensor.my_temperature`     |
-| low             | sensor or float      | **Required**             | 42      | Sensor to use for the forecast low, e.g. `sensor.temperature_overnight_low` |
-| high            | sensor or float      | **Required**             | 82      | Sensor to use for the forecast high, e.g. `sensor.temperature_daytime_high` |
-| trend           | sensor or float      | optional                 | 1.8     | The current temperature trend in °/hour, e.g. `sensor.my_temperature_trend` |
-| cold            | number               | optional                 | 32      | Your personal preference for "cold". Will be shown as blue.                 |
-| hot             | number               | optional                 | 100     | Your personal preference for "hot". Will be shown as red.                   |
-| trend_cold      | number               | optional                 | -5      | Your personal preference for "cold" for the trend. Will be shown as blue.   |
-| trend_hot       | number               | optional                 | 5       | Your personal preference for "hot" for the trend. Will be shown as red.     |
-| color_current   | boolean              | optional                 | true    | Color the background of the current temperature field.                      |
-| color_trend     | boolean              | optional                 | true    | Color the background of the temperature trend.                              |
-| show_unit       | boolean              | optional                 | false   | Show the unit of measurement in the trend field.                            |
-| round_to        | int                  | optional                 | 0       | Number of decimals to round the current temperature to.                     |
-| vertical_height | HTML unit of measure | Required<br/>for Masonry | 200px   | Height of the card in Masonry.                                              |
+| Name            | Type                 | Required                 | Default | Description                                                                                                                                                                                                     |
+| --------------- | -------------------- | ------------------------ | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| type            | string               | **Required**             |         | `custom:big-temperature-card`                                                                                                                                                                                   |
+| current         | sensor or float      | **Required**             | 65.43   | Sensor to use for the current temperature, e.g. `sensor.my_temperature`                                                                                                                                         |
+| low             | sensor or float      | **Required**             | 42      | Sensor to use for the forecast low, e.g. `sensor.temperature_overnight_low`                                                                                                                                     |
+| high            | sensor or float      | **Required**             | 82      | Sensor to use for the forecast high, e.g. `sensor.temperature_daytime_high`                                                                                                                                     |
+| trend           | sensor or float      | optional                 | 1.8     | The current temperature trend in °/hour, e.g. `sensor.my_temperature_trend`                                                                                                                                     |
+| cold            | number               | optional                 | 32      | Your personal preference for "cold". Will be shown as blue.                                                                                                                                                     |
+| hot             | number               | optional                 | 100     | Your personal preference for "hot". Will be shown as red.                                                                                                                                                       |
+| trend_cold      | number               | optional                 | -5      | Your personal preference for "cold" for the trend. Will be shown as blue.                                                                                                                                       |
+| trend_hot       | number               | optional                 | 5       | Your personal preference for "hot" for the trend. Will be shown as red.                                                                                                                                         |
+| color_current   | boolean              | optional                 | true    | Color the background of the current temperature field.                                                                                                                                                          |
+| color_trend     | boolean              | optional                 | true    | Color the background of the temperature trend.                                                                                                                                                                  |
+| show_unit       | boolean or string    | optional                 | false   | Show the unit of measurement in the trend field. If a true boolean, then get it from the `current` sensor. If a string, then just show the string (useful for sensors that do not have a `unit_of_measurment`). |
+| round_to        | int                  | optional                 | 0       | Number of decimals to round the current temperature to.                                                                                                                                                         |
+| vertical_height | HTML unit of measure | Required<br/>for Masonry | 200px   | Height of the card in Masonry.                                                                                                                                                                                  |
 
 The `trend` setting will display a per-hour trend below the current temperature. You have to create this sensor. See
 [below for an example](#how-to-create-a-per-hour-temperature-trend).
