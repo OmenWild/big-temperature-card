@@ -173,7 +173,10 @@ class BigTemperatureCard extends HTMLElement {
             if (config.show_unit) {
                 if (config.show_unit === false || config.show_unit === true) {
                     try {
-                        measurement = hass.states[config.current].attributes.unit_of_measurement || "";
+                        measurement = hass.formatEntityAttributeValue(
+                            hass.states[config.current],
+                            "unit_of_measurement"
+                        );
                     } catch (error) {}
                 } else {
                     measurement = config.show_unit;
