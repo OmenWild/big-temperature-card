@@ -194,9 +194,9 @@ class BigTemperatureCard extends HTMLElement {
             }
 
             if (state < 0) {
-                this._trend.style.setProperty("text-align", "left");
+                this._trend.style.setProperty("justify-content", "left");
             } else {
-                this._trend.style.setProperty("text-align", "right");
+                this._trend.style.setProperty("justify-content", "right");
             }
         }
     }
