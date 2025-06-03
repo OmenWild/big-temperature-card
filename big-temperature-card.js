@@ -426,11 +426,9 @@ class BigTemperatureCard extends HTMLElement {
     // The rules for sizing your card in the grid in sections view
     getGridOptions() {
         return {
-            rows: 3,
-            // min_columns: 12,
+            rows: 4,
             columns: 12,
             min_rows: 2,
-            // max_rows: 4,
         };
     }
 
