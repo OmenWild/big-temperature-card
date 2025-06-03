@@ -189,7 +189,6 @@ class BigTemperatureCard extends HTMLElement {
                 state = hass.states[config.trend].state;
             }
             let value = parseFloat(state).toFixed(1);
-            // let innerHTML = `&nbsp;${value}<span class="faded">${measurement}</span><small>&sol;hr</small>&nbsp;`;
             let innerHTML = `${value}<span class="faded">${measurement}</span><small>&sol;hr</small>`;
 
             // As a debug area
@@ -232,13 +231,13 @@ class BigTemperatureCard extends HTMLElement {
 
     setConfig(config) {
         if (!config.current) {
-            throw new Error("Please define a sensor providing the current temperature: current");
+            throw new Error("Please define a sensor, or float for testing, providing the current temperature: current");
         }
         if (!config.low) {
-            throw new Error("Please define a sensor providing the low forecast: low");
+            throw new Error("Please define a sensor, or float for testing, providing the low forecast: low");
         }
         if (!config.high) {
-            throw new Error("Please define a sensor providing the high forecast: high");
+            throw new Error("Please define a sensor, or float for testing, providing the high forecast: high");
         }
 
         this._config = {
