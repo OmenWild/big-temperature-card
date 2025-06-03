@@ -4,10 +4,14 @@ A simple card to display big numbers for temperature, designed to be readable fr
 supports background colors for the daily low & high, and optionally for the current temperature and the trend. These
 colors provide an at-a-glance indication of how comfortable today will be.
 
-The font in each area will start small, then auto-resize to fill the maximum amount of space. This is an abuse of how
-HTML is suppose to work, so the font size tends to jump a bit.
+The font in each area will start small, then auto-resize to fill the maximum amount of space. Because of the way the
+maximum font size discovery works, the font size will jump from small to fitted, and will lag when the window if first
+loaded or resized.
 
 You can click/tap on each number area to get a standard HASS popup for that sensor.
+
+In this example `54` is the overnight low, `60` is the current temperature, `87` is the daytime high, and `-3.9°F/hr` is
+the current temperature trend (custom sensor required).
 
 <img src="example.png" height="182">
 
