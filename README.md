@@ -1,13 +1,15 @@
-# Big Temperature card
+# Big Temperature Card
 
-A simple card to display big numbers for temperature, designed to be readable from across the room for a wall tablet. It
-also supports colors as background for the daily low & high, and optionally for the current temperature and the trend.
-The numbers will auto-resize to fill the maximum amount of space possible.
+A simple card to display big numbers for temperature, designed to be readable from across the room on a wall tablet. It
+supports background colors for the daily low & high, and optionally for the current temperature and the trend. These
+colors provide an at-a-glance indication of how comfortable today will be.
+
+The font in each area will start small, then auto-resize to fill the maximum amount of space. This is an abuse of how
+HTML is suppose to work, so the font size tends to jump a bit.
+
+You can click/tap on each number area to get a standard HASS popup for that sensor.
 
 <img src="example.png" height="182">
-
-The original version was based on [Bignum card](https://github.com/custom-cards/bignumber-card/), this version has been
-re-written from scratch.
 
 ## Options
 
@@ -27,6 +29,9 @@ re-written from scratch.
 | show_unit       | boolean or string    | optional                 | false   | Show the unit of measurement in the trend field. If a true boolean, then get it from the `current` sensor. If a string, then just show the string (useful for sensors that do not have a `unit_of_measurment`). |
 | round_to        | int                  | optional                 | 0       | Number of decimals to round the current temperature to.                                                                                                                                                         |
 | vertical_height | HTML unit of measure | Required<br/>for Masonry | 200px   | Height of the card in Masonry.                                                                                                                                                                                  |
+
+The four sensors (`current`, `low`, `high`, and `trend`) can be set to floats for testing to find the color settings you
+like best, and to see how the auto-scaling works.
 
 The `trend` setting will display a per-hour trend below the current temperature. You have to create this sensor. See
 [below for an example](#how-to-create-a-per-hour-temperature-trend).
@@ -56,7 +61,7 @@ show_unit: true
 
 ### Masonry
 
-Same as `Sections`, but you have to manually specify the height.
+Same as `Sections`, but you have to manually specify the height in a CSS unit (`px`, `em`, etc.).
 
 ```yaml
 vertical_height: 200px
@@ -75,3 +80,8 @@ vertical_height: 200px
   max_age:
       minutes: 60
 ```
+
+## History
+
+The original version was based on [Bignum card](https://github.com/custom-cards/bignumber-card/), this version has been
+re-written from scratch.
