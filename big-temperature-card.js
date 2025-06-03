@@ -2,7 +2,6 @@ const _btc = "big-temperature-card";
 const _btc_url = `https://github.com/OmenWild/${_btc}`;
 const _btc_version = "v1.0";
 
-
 class BigTemperatureCard extends HTMLElement {
     // private properties
     _config = false;
@@ -174,7 +173,7 @@ class BigTemperatureCard extends HTMLElement {
             if (config.show_unit) {
                 try {
                     measurement = hass.states[config.current].attributes.unit_of_measurement || "";
-                } catch (error) { }
+                } catch (error) {}
             }
 
             if (typeof config.trend === "number") {
@@ -257,76 +256,79 @@ class BigTemperatureCard extends HTMLElement {
         };
 
         if (!this.setupComplete) {
-            const card = document.createElement("ha-card");
-
-            const container = document.createElement("div");
-            container.id = "container";
-            container.className = "bwc-grid-container";
-
-            const low = document.createElement("div");
-            low.id = "bwc-low";
-            low.className = "grid-item bwc-low bwc-background-color";
-            container.appendChild(low);
-
-            const current = document.createElement("div");
-            current.id = "bwc-current";
-            current.className = "grid-item bwc-current bwc-background-color";
-            container.appendChild(current);
-
-            const trend = document.createElement("div");
-            trend.id = "bwc-trend";
-            trend.className = "grid-item bwc-trend";
-            container.appendChild(trend);
-
-            const high = document.createElement("div");
-            high.id = "bwc-high";
-            high.className = "grid-item bwc-high bwc-background-color";
-            container.appendChild(high);
-
-            const canvas = document.createElement("canvas");
-            const context = canvas.getContext("2d");
-            this._canvas = canvas;
-            this._canvas_context = context;
-
-            const style = document.createElement("style");
-            style.textContent = this.getCSS();
-
-            card.appendChild(container);
-            card.appendChild(style);
-
-            // TODO: make this work again.
-            // card.addEventListener("click", (event) => {
-            //     this._fire("hass-more-info", { currentId: config.current });
-            // });
-
-            this.append(card);
-
-            this._card = card;
-            this._low = low;
-            this._current = current;
-            this._trend = trend;
-            this._high = high;
-
-            this.wipeCache();
-
-            // Set this up here so it is only configured a single time.
-            const resizeObserver = new ResizeObserver(
-                this.debounce((entry) => {
-                    // If the vertical height is defined, and using mason layout, use set value for height.
-                    let column_size = parseInt(window.getComputedStyle(this._card).getPropertyValue("--column-size"));
-                    if (!column_size && this._config.vertical_height) {
-                        card.style.setProperty("--vertical-px", this._config.vertical_height);
-                    }
-                    // On resize, wipe the caches.
-                    this.wipeCache();
-                }, 100)
-            );
-
-            // Observe the ha-card for size changes so the font size can be recalculated.
-            resizeObserver.observe(card);
-
+            this.setupElements();
             this.setupComplete = true;
         }
+    }
+
+    setupElements() {
+        const card = document.createElement("ha-card");
+
+        const container = document.createElement("div");
+        container.id = "container";
+        container.className = "bwc-grid-container";
+
+        const low = document.createElement("div");
+        low.id = "bwc-low";
+        low.className = "grid-item bwc-low bwc-background-color";
+        container.appendChild(low);
+
+        const current = document.createElement("div");
+        current.id = "bwc-current";
+        current.className = "grid-item bwc-current bwc-background-color";
+        container.appendChild(current);
+
+        const trend = document.createElement("div");
+        trend.id = "bwc-trend";
+        trend.className = "grid-item bwc-trend";
+        container.appendChild(trend);
+
+        const high = document.createElement("div");
+        high.id = "bwc-high";
+        high.className = "grid-item bwc-high bwc-background-color";
+        container.appendChild(high);
+
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
+        this._canvas = canvas;
+        this._canvas_context = context;
+
+        const style = document.createElement("style");
+        style.textContent = this.getCSS();
+
+        card.appendChild(container);
+        card.appendChild(style);
+
+        // TODO: make this work again.
+        // card.addEventListener("click", (event) => {
+        //     this._fire("hass-more-info", { currentId: config.current });
+        // });
+
+        this.append(card);
+
+        this._card = card;
+        this._low = low;
+        this._current = current;
+        this._trend = trend;
+        this._high = high;
+
+        this.wipeCache();
+
+        // Set this up here so it is only configured a single time.
+        const resizeObserver = new ResizeObserver(
+            this.debounce((entry) => {
+                // If the vertical height is defined, and using mason layout, use set value for height.
+                let column_size = parseInt(window.getComputedStyle(this._card).getPropertyValue("--column-size"));
+                if (!column_size && this._config.vertical_height) {
+                    card.style.setProperty("--vertical-px", this._config.vertical_height);
+                }
+                // On resize, wipe the caches.
+                this.wipeCache();
+            }, 100)
+        );
+
+        // Observe the ha-card for size changes so the font size can be recalculated.
+        resizeObserver.observe(card);
     }
 
     debounce(f, delay) {
@@ -473,7 +475,6 @@ class BigTemperatureCardEditor extends HTMLElement {
                 <br/> Use the Code Editor for card config for now.
                 <br/>Docs: <a href="${_btc_url}">${_btc_url}</a></div>
                 `;
-
     }
 }
 
