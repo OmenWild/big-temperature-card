@@ -305,13 +305,9 @@ class BigTemperatureCard extends HTMLElement {
         card.appendChild(container);
         card.appendChild(style);
 
-        // TODO: make this work again.
-        // card.addEventListener("click", (event) => {
-        //     this._fire("hass-more-info", { currentId: config.current });
-        // });
-
         this.append(card);
 
+        // Save for direct access.
         this._card = card;
         this._low = low;
         this._current = current;
@@ -319,6 +315,17 @@ class BigTemperatureCard extends HTMLElement {
         this._high = high;
 
         this.wipeCache();
+
+        // Attach click listeners for the 4 parts for popup graphs.
+        for (const t of ["current", "high", "low", "trend"]) {
+            const obj_name = `_${t}`;
+            // TODO: it feels like there should be a better way to figure this out, but I don't have access to the hass object at this stage.
+            if (typeof this._config[t] === "string") {
+                this[obj_name].addEventListener("click", (event) => {
+                    this.hassMoreInfo(this._config[t]);
+                });
+            }
+        }
 
         // Set this up here so it is only configured a single time.
         const resizeObserver = new ResizeObserver(
@@ -343,6 +350,21 @@ class BigTemperatureCard extends HTMLElement {
             clearTimeout(timer);
             timer = setTimeout(() => f.apply(this, args), delay);
         };
+    }
+
+    hassMoreInfo(entityId) {
+        const event = new Event("hass-more-info", {
+            bubbles: true,
+            composed: true,
+        });
+
+        event.detail = {
+            entityId: entityId,
+            // See https://github.com/home-assistant/frontend/blob/099ea61a944966f416e4fd4a711c3ebb11141c21/src/dialogs/more-info/ha-more-info-dialog.ts#L62
+            view: "info",
+        };
+
+        this._card.dispatchEvent(event);
     }
 
     getCSS() {
