@@ -141,6 +141,19 @@ class BigTemperatureCard extends HTMLElement {
 
         const config = this._config;
 
+        if (!this._listenersAttached) {
+            // Attach click listeners for the 4 parts for popup graphs.
+            for (const t of ["current", "high", "low", "trend"]) {
+                const obj_name = `_${t}`;
+                if (config[t] in hass.states) {
+                    this[obj_name].addEventListener("click", (event) => {
+                        this.hassMoreInfo(config[t]);
+                    });
+                }
+            }
+            this._listenersAttached = true;
+        }
+
         let state;
 
         for (const t of ["current", "low", "high"]) {
@@ -315,17 +328,6 @@ class BigTemperatureCard extends HTMLElement {
         this._high = high;
 
         this.wipeCache();
-
-        // Attach click listeners for the 4 parts for popup graphs.
-        for (const t of ["current", "high", "low", "trend"]) {
-            const obj_name = `_${t}`;
-            // TODO: it feels like there should be a better way to figure this out, but I don't have access to the hass object at this stage.
-            if (typeof this._config[t] === "string") {
-                this[obj_name].addEventListener("click", (event) => {
-                    this.hassMoreInfo(this._config[t]);
-                });
-            }
-        }
 
         // Set this up here so it is only configured a single time.
         const resizeObserver = new ResizeObserver(
