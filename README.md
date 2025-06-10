@@ -13,7 +13,7 @@ You can click/tap on each number area to get a standard HASS popup for that sens
 In this example `54` is the overnight low, `60` is the current temperature, `87` is the daytime high, and `-3.9°F/hr` is
 the current temperature trend (custom sensor required).
 
-<img src="example.png" height="182">
+<img src="https://raw.githubusercontent.com/OmenWild/big-temperature-card/refs/heads/master/example.png" height="182">
 
 ## Options
 
