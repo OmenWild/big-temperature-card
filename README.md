@@ -13,7 +13,7 @@ You can click/tap on each number area to get a standard HASS popup for that sens
 In this example `54` is the overnight low, `60` is the current temperature, `87` is the daytime high, and `-3.9°F/hr` is
 the current temperature trend (custom sensor required).
 
-![Example](https://raw.githubusercontent.com/OmenWild/big-temperature-card/refs/heads/master/example.png)
+![image](https://raw.githubusercontent.com/OmenWild/big-temperature-card/refs/heads/master/example.png)
 
 ## Options
 
@@ -23,6 +23,9 @@ the current temperature trend (custom sensor required).
 | current         | sensor or float      | **Required**             | 65.43   | Sensor to use for the current temperature, e.g. `sensor.my_temperature`                                                                                                                                         |
 | low             | sensor or float      | **Required**             | 42      | Sensor to use for the forecast low, e.g. `sensor.temperature_overnight_low`                                                                                                                                     |
 | high            | sensor or float      | **Required**             | 82      | Sensor to use for the forecast high, e.g. `sensor.temperature_daytime_high`                                                                                                                                     |
+| title_current   | string               | optional                 | None    | A title to show in the center column                                                                                                                                                                            |
+| title_low       | string               | optional                 | None    | A title to show in the left column                                                                                                                                                                              |
+| title_high      | string               | optional                 | None    | A title to show in the right column                                                                                                                                                                             |
 | trend           | sensor or float      | optional                 | 1.8     | The current temperature trend in °/hour, e.g. `sensor.my_temperature_trend`                                                                                                                                     |
 | cold            | number               | optional                 | 32      | Your personal preference for "cold". Will be shown as blue.                                                                                                                                                     |
 | hot             | number               | optional                 | 100     | Your personal preference for "hot". Will be shown as red.                                                                                                                                                       |
@@ -82,7 +85,7 @@ vertical_height: 200px
   precision: 1
   sampling_size: 300
   max_age:
-      minutes: 60
+    minutes: 60
 ```
 
 ## History
