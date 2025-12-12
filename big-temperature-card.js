@@ -93,12 +93,14 @@ class BigTemperatureCard extends HTMLElement {
       let textHeight = fM.actualBoundingBoxAscent + fM.actualBoundingBoxDescent;
 
       if (textWidth >= el.clientWidth || textHeight >= el.clientHeight) {
+        // console.log(`YYY: ${el.id} textWidth=${textWidth} el.clientWidth=${el.clientWidth} textHeight=${textHeight} el.clientHeight=${el.clientHeight}`)
+
         if (!this._font_scaling) {
           el.style.fontSize = `${fontSize}px`;
           const fS = parseFloat(getComputedStyle(el).fontSize);
           this._font_scaling = fontSize / fS;
         }
-        // console.log(`YYY: ${el.id} fontSize=${fontSize} font_scaling=${this._font_scaling}`);
+        // console.log(`ZZZ: ${el.id} fontSize=${fontSize} font_scaling=${this._font_scaling}`);
         return this.setCachedFontSize(text, el, (fontSize - 10) * this._font_scaling);
       }
     }
@@ -450,6 +452,7 @@ class BigTemperatureCard extends HTMLElement {
     }
 
     .bwc-current {
+        // align-items: flex-start; /* Aligns content to the top */
         grid-column: 2;
         grid-row: var(--bwc-row-start);
         border-left: solid white;
@@ -468,7 +471,7 @@ class BigTemperatureCard extends HTMLElement {
     }
 
     .bwc-current, .bwc-trend {
-        // display: flex;
+        display: flex; /* Required, otherwise text flows out the bottom */
         align-items: center;
         padding-left: 5px;
         padding-right: 5px;
